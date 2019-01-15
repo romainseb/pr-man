@@ -1,0 +1,14 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["node"],
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "import/default": "off",
+    "import/no-nodejs-modules": "off",
+    "import/prefer-default-export": "off",
+    "import/no-named-as-default": "off",
+    "no-console": "off"
+  }
+}

@@ -1,12 +1,13 @@
 {
   "name": "@romainseb/pr-man",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "lib/index.js",
   "author": "Sébastien Romain",
   "license": "Apache-2.0",
   "scripts": {
     "build": "rimraf ./lib && babel -d lib ./src/",
     "start": "babel-node src/test.js",
+    "test": "echo",
     "prepublish": "yarn run build"
   },
   "dependencies": {

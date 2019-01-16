@@ -4,8 +4,11 @@
   "main": "lib/index.js",
   "author": "Sébastien Romain",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "build": "rimraf ./lib && babel -d lib ./src/",
+    "build": "rm -rf lib && babel -d lib ./src/",
     "start": "babel-node src/test.js",
     "test": "echo",
     "prepublish": "yarn run build"

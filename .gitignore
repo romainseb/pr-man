@@ -11,6 +11,8 @@ configurations/
 .serverless
 serverless.yml
 
+.npmrc
+
 lib
 
 # Runtime data

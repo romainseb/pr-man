@@ -6,9 +6,9 @@
   },
   "rules": {
     "import/default": "off",
+    "semi": ["error", "never"],
     "import/no-nodejs-modules": "off",
     "import/prefer-default-export": "off",
-    "import/no-named-as-default": "off",
-    "no-console": "off"
+    "import/no-named-as-default": "off"
   }
 }

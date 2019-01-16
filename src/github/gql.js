@@ -1,15 +1,25 @@
+// @ts-check
+
+// Currently, the github api set the limit to 100
+const MAX_ROWS = 100
+
+/**
+ * This function return a graphql request for a given repository
+ * @param {string} owner The name of the repository's owner
+ * @param {string} name The name of the repository
+ */
 export function getGQL(owner, name) {
   return `
     {
         repository(owner: "${owner}", name: "${name}") {
-          pullRequests(last: 100, states: [OPEN]) {
+          pullRequests(first: ${MAX_ROWS}, states: [OPEN]) {
             edges {
               cursor
               node {
                 author {
                   login
                 }
-                labels(last: 100) {
+                labels(first: ${MAX_ROWS}) {
                   edges {
                     node {
                       name
@@ -19,7 +29,7 @@ export function getGQL(owner, name) {
                 title
                 createdAt
                 url
-                reviews(last: 100) {
+                reviews(first: ${MAX_ROWS}) {
                   edges {
                     node {
                       author {
@@ -34,5 +44,5 @@ export function getGQL(owner, name) {
           }
         }
       }
-    `;
+    `
 }

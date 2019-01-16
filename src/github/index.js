@@ -1,102 +1,52 @@
-import GithubGraphQLApi from "node-github-graphql";
-import { GITHUB_TOKEN_API } from "../env";
-import { getGQL } from "./gql";
+import GithubGraphQLApi from "node-github-graphql"
+import { getGQL } from "./gql"
+import {
+  filterByUsers,
+  filterByLabels,
+  getDismissAndApprovedPr
+} from "./github-tools"
 
-const github = new GithubGraphQLApi({
-  token: GITHUB_TOKEN_API
-});
-
-function findUserByIndex(users) {
-  return login => users.findIndex(user => user.githubUserName === login) !== -1;
+/**
+ * This function return an api initialized
+ * @param {string} githubToken github token
+ */
+export function getGithubApi(githubToken) {
+  return new GithubGraphQLApi({
+    token: githubToken
+  })
 }
 
-function filterByUsers(users) {
-  return pr => findUserByIndex(users)(pr.node.author.login);
-}
-
-function isLabelIgnored(ignoredLabels) {
-  return label => ignoredLabels.includes(label.node.name);
-}
-
-function filterByLabels(ignoredLabels) {
-  return pr =>
-    pr.node.labels.edges.findIndex(isLabelIgnored(ignoredLabels)) === -1;
-}
-
-function removeFromArray(array, value) {
-  if (array.includes(value)) {
-    array.splice(array.indexOf(value), 1);
-  }
-}
-
-function addInArray(array, value) {
-  if (!array.includes(value)) {
-    array.push(value);
-  }
-}
-
-function getDismissAndApprovedPr(prs, nbApproval) {
-  const prToReview = [];
-  const prToDiscuss = [];
-  const prToMerge = [];
-
-  prs.forEach(pr => {
-    const rejects = [];
-    const approved = [];
-
-    pr.node.reviews.edges.forEach(review => {
-      const reviewState = review.node.state;
-      const author = review.node.author.login;
-      if (reviewState === "APPROVED") {
-        addInArray(approved, author);
-        removeFromArray(rejects, author);
-      }
-      if (reviewState === "CHANGES_REQUESTED") {
-        addInArray(rejects, author);
-        removeFromArray(approved, author);
-      }
-      if (reviewState === "DISMISSED") {
-        removeFromArray(rejects, author);
-        removeFromArray(approved, author);
-      }
-    });
-
-    if (rejects.length) {
-      prToDiscuss.push(pr);
-    } else if (approved.length >= nbApproval) {
-      prToMerge.push(pr);
-    } else {
-      prToReview.push(pr);
-    }
-  });
-  return [prToReview, prToDiscuss, prToMerge];
-}
-
-export function getPrsFromRepository(repository, users) {
+/**
+ * This function get pr from a repository & format it
+ * @param {object} repository the repository configuration
+ * @param {array} users the team
+ * @param {object} githubApi the github api
+ */
+export function getPrsFromRepository(repository, users, githubApi) {
   return new Promise((resolve, reject) => {
-    github.query(
+    githubApi.query(
       getGQL(repository.owner, repository.repository),
       null,
       (res, err) => {
         if (err) {
-          reject(err);
+          reject(err)
         }
-        const allPrs = res.data.repository.pullRequests.edges;
+        const allPrs = res.data.repository.pullRequests.edges
         const filteredPrs = allPrs
           .filter(filterByUsers(users))
-          .filter(filterByLabels(repository.ignoreLabels));
+          .filter(filterByLabels(repository.ignoreLabels))
         const [prToReview, prToDiscuss, prToMerge] = getDismissAndApprovedPr(
           filteredPrs,
           repository.reviewRequired
-        );
+        )
 
         resolve({
           repository,
           prToReview,
           prToDiscuss,
           prToMerge
-        });
+        })
       }
-    );
-  });
+    )
+  })
 }

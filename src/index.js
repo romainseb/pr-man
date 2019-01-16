@@ -1,15 +1,33 @@
-import configurations from "./configurations";
-import { getPrsFromRepository } from "./github";
-import { sendPrsToSlack } from "./slack";
+import { ROLE } from "./constants"
+import { getGithubApi, getPrsFromRepository } from "./github"
+import { sendPrsToSlack, getSlackApi } from "./slack"
 
-export const run = function() {
+function checkParameters(githubToken, slackToken) {
+  if (!githubToken) {
+    throw new Error("There is no github token there")
+  }
+  if (!slackToken) {
+    throw new Error("There is no slack token there")
+  }
+}
+
+function run(configurations, githubToken, slackToken) {
+  checkParameters(githubToken, slackToken)
+  const githubApi = getGithubApi(githubToken)
+  const slackApi = getSlackApi(slackToken)
+
   configurations.forEach(configuration => {
     Promise.all(
       configuration.repositories.map(repository =>
-        getPrsFromRepository(repository, configuration.users)
+        getPrsFromRepository(repository, configuration.users, githubApi)
       )
     ).then(values => {
-      sendPrsToSlack(values, configuration);
-    });
-  });
-};
+      sendPrsToSlack(values, configuration, slackApi)
+    })
+  })
+}
+
+export default {
+  run,
+  ROLE
+}

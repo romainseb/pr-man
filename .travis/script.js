@@ -23,8 +23,12 @@ async function executeShellCommand(shellCommand, trowError = true) {
 async function main() {
   const values = await executeShellCommand(`npm view ${packageName} versions`)
   if (!values.includes(packageCurrentVersion)) {
+    console.log(`Write NPMRC file`)
     await writeNpmrcFile()
+    console.log(`Publishing ${packageCurrentVersion} version`)
     await executeShellCommand(`yarn publish`)
+  } else {
+    console.log("No publication : Version already published")
   }
 }
 

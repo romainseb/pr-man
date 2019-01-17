@@ -1,11 +1,16 @@
 {
   "name": "@romainseb/pr-man",
   "version": "0.0.2",
+  "description": "This repository allow to send PR messages to Slack",
   "main": "lib/index.js",
   "author": "Sébastien Romain",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/romainseb/pr-man"
   },
   "scripts": {
     "build": "rm -rf lib && babel -d lib ./src/",

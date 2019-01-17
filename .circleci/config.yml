@@ -8,6 +8,9 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
       - run: npm install
       - run: npm run build
       - run: npm run deploy

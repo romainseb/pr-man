@@ -26,7 +26,7 @@ async function main() {
     console.log(`Write NPMRC file`)
     await writeNpmrcFile()
     console.log(`Publishing ${packageCurrentVersion} version`)
-    await executeShellCommand(`yarn publish`)
+    await executeShellCommand(`npm publish`)
   } else {
     console.log("No publication : Version already published")
   }

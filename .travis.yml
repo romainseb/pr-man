@@ -5,6 +5,7 @@ deploy:
   - language: node_js
       node_js:
         - v11.6.0
-      script:
+      before_script:
         - yarn
+      script:
         - yarn travis-deploy

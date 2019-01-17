@@ -11,7 +11,8 @@ const packageName = package.name
 
 async function writeNpmrcFile() {
   const npmrcToken = process.env.NPMRC_TOKEN
-  fs_writeFile("./.npmrc", `//registry.npmjs.org/:_authToken=${npmrcToken}`)
+  console.log(npmrcToken.substring(0, 8))
+  fs_writeFile(".npmrc", `//registry.npmjs.org/:_authToken=${npmrcToken}`)
 }
 
 async function executeShellCommand(shellCommand, trowError = true) {

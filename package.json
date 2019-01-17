@@ -12,6 +12,7 @@
     "start": "babel-node src/test.js",
     "test": "echo",
     "travis-deploy": "node .travis/script.js",
+    "prepare": "yarn run build",
     "prepublish": "yarn run build"
   },
   "dependencies": {

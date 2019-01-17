@@ -1,11 +1,8 @@
 language: node_js
 node_js:
   - v11.6.0
-deploy:
-  - language: node_js
-    node_js:
-      - "11"
-    before_script:
-      - yarn
-    script:
-      - yarn travis-deploy
+
+before_script:
+  - yarn
+script:
+  - yarn travis-deploy

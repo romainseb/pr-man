@@ -10,10 +10,8 @@
   "scripts": {
     "build": "rm -rf lib && babel -d lib ./src/",
     "start": "babel-node src/test.js",
-    "test": "echo",
-    "deploy": "node .ci/script.js",
-    "prepare": "yarn run build",
-    "prepublish": "yarn run build"
+    "deploy": "node .circleci/script.js",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "node-github-graphql": "^0.2.7",

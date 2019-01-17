@@ -1,5 +1,13 @@
-version: 2
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            branches:
+              only: master
 
+version: 2
 jobs:
   build:
     docker:

@@ -32,4 +32,5 @@ async function main() {
   }
 }
 
+console.log("Travis deploy script")
 main()

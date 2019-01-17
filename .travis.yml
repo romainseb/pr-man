@@ -2,11 +2,9 @@ language: node_js
 node_js:
   - v11.6.0
 
-before_install:
-  - cat <<EOF ${NPM_USER} ${NPM_PASSWORD} ${NPM_EMAIL} EOF | npm adduser
-
 before_script:
   - yarn
+  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
 script:
   - yarn travis-deploy

@@ -1,6 +1,6 @@
 {
   "name": "@romainseb/pr-man",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "This repository allow to send PR messages to Slack",
   "main": "lib/index.js",
   "author": "Sébastien Romain",

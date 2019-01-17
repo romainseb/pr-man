@@ -6,7 +6,8 @@ import {
   buildAttachment,
   buildBlock,
   buildDiscussedAttachment,
-  isAuthorRole
+  isAuthorRole,
+  usersContainsRole
 } from "./slack-tools"
 
 /**
@@ -21,7 +22,7 @@ export function getSlackApi(slackToken) {
  * this function send the pr to slack
  * @param {array} repositories the repositories result
  * @param {object} configuration the configuration for the team
- * @param {object} slackApi the salck api
+ * @param {object} slackApi the slack api
  */
 export function sendPrsToSlack(repositories, configuration, slackApi) {
   return new Promise((resolve, reject) => {
@@ -63,13 +64,24 @@ export function sendPrsToSlack(repositories, configuration, slackApi) {
       )
     })
 
-    const attachments = [
-      buildBlock("Frontend review required", "#3949AB", frontendPRs),
-      buildBlock("Backend review required", "#546E7A", backendPRs),
-      buildBlock("QA review required", "#2c3e50", qAPRs),
-      buildBlock("Request changes", "#e53935", discussedPRs),
-      buildBlock("Ready to merge", "#43A047", approvedPRs)
-    ]
+    const attachments = []
+    if (usersContainsRole(users, ROLE.FRONTEND)) {
+      attachments.push(
+        buildBlock("Frontend review required", "#3949AB", frontendPRs)
+      )
+    }
+    if (usersContainsRole(users, ROLE.BACKEND)) {
+      attachments.push(
+        buildBlock("Backend review required", "#546E7A", backendPRs)
+      )
+    }
+
+    if (usersContainsRole(users, ROLE.QA)) {
+      attachments.push(buildBlock("QA review required", "#2c3e50", qAPRs))
+    }
+
+    attachments.push(buildBlock("Request changes", "#e53935", discussedPRs))
+    attachments.push(buildBlock("Ready to merge", "#43A047", approvedPRs))
 
     slackApi.api(
       "chat.postMessage",

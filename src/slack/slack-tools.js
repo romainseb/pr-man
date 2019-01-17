@@ -25,13 +25,9 @@ export function isAuthorRole(users, role) {
 /**
  * This function build a pr label
  * @param {object} repository the repository description
- * @param {boolean} noUser tell if we don"t want to show the author name
  */
-export function buildAttachment(repository, noUser = false) {
-  return pr =>
-    `${repository.label} - <${pr.node.url}|${pr.node.title}> ${
-      noUser ? "" : " ( " + pr.node.author.login + " ) "
-    }`
+export function buildAttachment(repository) {
+  return pr => `${repository.label} - <${pr.node.url}|${pr.node.title}>`
 }
 
 /**
@@ -41,7 +37,7 @@ export function buildAttachment(repository, noUser = false) {
  */
 export function buildDiscussedAttachment(repository, users) {
   return pr =>
-    `${buildAttachment(repository, true)(pr)} @${getSlackUsername(
+    `${buildAttachment(repository)(pr)} @${getSlackUsername(
       pr.node.author.login,
       users
     )}`
@@ -59,4 +55,13 @@ export function buildBlock(title, color, prs) {
     text: prs.length > 0 ? prs.join("\n") : "Nothing 🎉",
     color
   }
+}
+
+/**
+ * this function tell if the users contains a specific role
+ * @param {array} users list of users
+ * @param {Symbol} role role searched
+ */
+export function usersContainsRole(users, role) {
+  return users.findIndex(user => user.role === role) !== -1
 }

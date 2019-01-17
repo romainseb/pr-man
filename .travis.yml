@@ -3,7 +3,7 @@ node_js:
   - v11.6.0
 
 before_install:
-  - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+  - cat <<EOF ${NPM_USER} ${NPM_PASSWORD} ${NPM_EMAIL} EOF | npm adduser
 
 before_script:
   - yarn

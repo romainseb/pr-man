@@ -13,25 +13,24 @@
     "url": "https://github.com/romainseb/pr-man"
   },
   "scripts": {
-    "build": "rm -rf lib && babel -d lib ./src/",
-    "start": "babel-node src/test.js",
+    "build": "tsc",
+    "start": "ts-node src/test.js",
     "deploy": "node .circleci/script.js",
     "prepare": "npm run build"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
     "node-github-graphql": "^0.2.7",
     "slack-node": "^0.1.8"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.2.0",
-    "@babel/preset-env": "^7.0.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^10.0.0",
-    "babel-loader": "^8.0.0",
-    "eslint": "^5.0.0",
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.2",
+    "@typescript-eslint/parser": "^1.6.0",
+    "eslint": "^5.16.0",
     "eslint-config-node": "^4.0.0",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.3",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.4.2"
   }
 }

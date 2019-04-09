@@ -1,5 +1,4 @@
-// @ts-check
-
+import { User, Role, Repository, GithubPullRequest } from "../types"
 /**
  * this function get a slack username from a github login
  * @param {string} githubUsername the github login
@@ -20,8 +19,8 @@ function getSlackUsername(githubUsername: string, users: User[]): string {
  * @param {array} users array of users
  * @param {symbol} role the current role we want to filter
  */
-export function isAuthorRole(users: User[], role: ROLE) {
-	return (pr: any) =>
+export function isAuthorRole(users: User[], role: Role) {
+	return (pr: GithubPullRequest) =>
 		users.find(
 			user => pr.node.author.login === user.githubUserName && user.role === role
 		)
@@ -32,7 +31,8 @@ export function isAuthorRole(users: User[], role: ROLE) {
  * @param {object} repository the repository description
  */
 export function buildAttachment(repository: Repository) {
-	return (pr: any) => `${repository.label} - <${pr.node.url}|${pr.node.title}>`
+	return (pr: GithubPullRequest) =>
+		`${repository.label} - <${pr.node.url}|${pr.node.title}>`
 }
 
 /**
@@ -44,7 +44,7 @@ export function buildDiscussedAttachment(
 	repository: Repository,
 	users: User[]
 ) {
-	return (pr: any) =>
+	return (pr: GithubPullRequest) =>
 		`${buildAttachment(repository)(pr)} @${getSlackUsername(
 			pr.node.author.login,
 			users
@@ -57,7 +57,7 @@ export function buildDiscussedAttachment(
  * @param {string} color the block's color
  * @param {array} prs the block's pr
  */
-export function buildBlock(title: string, color: string, prs: any) {
+export function buildBlock(title: string, color: string, prs: string[]) {
 	return {
 		title,
 		text: prs.length > 0 ? prs.join("\n") : "Nothing 🎉",
@@ -70,6 +70,6 @@ export function buildBlock(title: string, color: string, prs: any) {
  * @param {array} users list of users
  * @param {Symbol} role role searched
  */
-export function usersContainsRole(users: User[], role: ROLE) {
+export function usersContainsRole(users: User[], role: Role) {
 	return users.findIndex(user => user.role === role) !== -1
 }

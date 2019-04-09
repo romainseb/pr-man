@@ -1,3 +1,5 @@
+import { User, GithubReview, GithubPullRequest, GithubLabel } from "../types"
+
 /**
  * This function return a function to find the index of a user
  * @param {array} users array of users
@@ -12,7 +14,7 @@ function getFindIndexOfUser(users: User[]) {
  * @param {array} ignoredLabels labels ignored for the prs
  */
 function isLabelIgnored(ignoredLabels: string[]) {
-	return (label: any) => ignoredLabels.includes(label.node.name)
+	return (label: GithubLabel) => ignoredLabels.includes(label.node.name)
 }
 
 /**
@@ -20,7 +22,8 @@ function isLabelIgnored(ignoredLabels: string[]) {
  * @param {array} users list of users
  */
 export function filterByUsers(users: User[]) {
-	return (pr: any) => getFindIndexOfUser(users)(pr.node.author.login)
+	return (pr: GithubPullRequest) =>
+		getFindIndexOfUser(users)(pr.node.author.login)
 }
 
 /**
@@ -28,7 +31,7 @@ export function filterByUsers(users: User[]) {
  * @param {array} ignoredLabels list of labels
  */
 export function filterByLabels(ignoredLabels: string[]) {
-	return (pr: any) =>
+	return (pr: GithubPullRequest) =>
 		pr.node.labels.edges.findIndex(isLabelIgnored(ignoredLabels)) === -1
 }
 
@@ -56,19 +59,22 @@ function addInArray(array: string[], login: string) {
 
 /**
  * This function return an object that list the approved / discussed / ready to review pr
- * @param {array} prs array of pull request
- * @param {number} nbApproval number of approval required to tell it's ready to merge
+ * @param prs array of pull request
+ * @param nbApproval number of approval required to tell it's ready to merge
  */
-export function getDismissAndApprovedPr(prs: any, nbApproval: number) {
-	const prToReview: any = []
-	const prToDiscuss: any = []
-	const prToMerge: any = []
+export function getDismissAndApprovedPr(
+	prs: GithubPullRequest[],
+	nbApproval: number
+) {
+	const prToReview: GithubPullRequest[] = []
+	const prToDiscuss: GithubPullRequest[] = []
+	const prToMerge: GithubPullRequest[] = []
 
-	prs.forEach((pr: any) => {
+	prs.forEach((pr: GithubPullRequest) => {
 		const rejects: string[] = []
 		const approved: string[] = []
 
-		pr.node.reviews.edges.forEach((review: any) => {
+		pr.node.reviews.edges.forEach((review: GithubReview) => {
 			const reviewState = review.node.state
 			const author = review.node.author.login
 			if (reviewState === "APPROVED") {

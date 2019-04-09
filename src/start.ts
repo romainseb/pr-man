@@ -1,3 +1,4 @@
+import { Configuration, Role } from "./types"
 import prMan from "./index"
 
 const configurations: Configuration[] = [
@@ -7,7 +8,7 @@ const configurations: Configuration[] = [
 			{
 				githubUserName: "romainseb",
 				slackUserName: "sromain",
-				role: ROLE.FRONTEND
+				role: Role.FRONTEND
 			}
 		],
 		repositories: [
@@ -22,12 +23,8 @@ const configurations: Configuration[] = [
 	}
 ]
 
-test("should test that PRMan is working", () => {
-	it("should run for a given configuration", () => {
-		prMan.run(
-			configurations,
-			process.env.GITHUB_TOKEN_API,
-			process.env.SLACK_TOKEN_API
-		)
-	})
-})
+prMan.run(
+	configurations,
+	process.env.GITHUB_TOKEN_API,
+	process.env.SLACK_TOKEN_API
+)

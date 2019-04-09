@@ -1,5 +1,11 @@
 import * as Slack from "slack-node"
 import {
+	EnvironmentVariable,
+	RepositoryToReview,
+	Configuration,
+	Role
+} from "../types"
+import {
 	buildAttachment,
 	buildBlock,
 	buildDiscussedAttachment,
@@ -24,7 +30,7 @@ export function getSlackApi(slackToken: EnvironmentVariable) {
 export function sendPrsToSlack(
 	repositories: RepositoryToReview[],
 	configuration: Configuration,
-	slackApi: any
+	slackApi: Slack
 ) {
 	return new Promise((resolve, reject) => {
 		const { users } = configuration
@@ -37,22 +43,22 @@ export function sendPrsToSlack(
 		repositories.forEach(repository => {
 			frontendPRs = frontendPRs.concat(
 				repository.prToReview
-					.filter(isAuthorRole(users, ROLE.FRONTEND))
+					.filter(isAuthorRole(users, Role.FRONTEND))
 					.map(buildAttachment(repository.repository))
 			)
 			backendPRs = backendPRs.concat(
 				repository.prToReview
-					.filter(isAuthorRole(users, ROLE.BACKEND))
+					.filter(isAuthorRole(users, Role.BACKEND))
 					.map(buildAttachment(repository.repository))
 			)
 			backendPRs = backendPRs.concat(
 				repository.prToReview
-					.filter(isAuthorRole(users, ROLE.OPS))
+					.filter(isAuthorRole(users, Role.OPS))
 					.map(buildAttachment(repository.repository))
 			)
 			qAPRs = qAPRs.concat(
 				repository.prToReview
-					.filter(isAuthorRole(users, ROLE.QA))
+					.filter(isAuthorRole(users, Role.QA))
 					.map(buildAttachment(repository.repository))
 			)
 			discussedPRs = discussedPRs.concat(
@@ -66,18 +72,18 @@ export function sendPrsToSlack(
 		})
 
 		const attachments = []
-		if (usersContainsRole(users, ROLE.FRONTEND)) {
+		if (usersContainsRole(users, Role.FRONTEND)) {
 			attachments.push(
 				buildBlock("Frontend review required", "#3949AB", frontendPRs)
 			)
 		}
-		if (usersContainsRole(users, ROLE.BACKEND)) {
+		if (usersContainsRole(users, Role.BACKEND)) {
 			attachments.push(
 				buildBlock("Backend review required", "#546E7A", backendPRs)
 			)
 		}
 
-		if (usersContainsRole(users, ROLE.QA)) {
+		if (usersContainsRole(users, Role.QA)) {
 			attachments.push(buildBlock("QA review required", "#2c3e50", qAPRs))
 		}
 

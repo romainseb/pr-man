@@ -1,3 +1,4 @@
+import { EnvironmentVariable, Configuration } from "./types"
 import { getGithubApi, getPrsFromRepository } from "./github"
 import { sendPrsToSlack, getSlackApi } from "./slack"
 

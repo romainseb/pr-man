@@ -15,17 +15,19 @@
 	},
 	"scripts": {
 		"build": "tsc",
+		"start": "ts-node src/start.ts",
 		"test": "jest --silent",
 		"deploy": "node .circleci/script.js",
 		"prepare": "npm run build"
 	},
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^1.6.0",
-		"node-github-graphql": "^0.2.7",
+		"github-graphql-api": "^1.0.6",
 		"slack-node": "^0.1.8"
 	},
 	"devDependencies": {
 		"@types/jest": "^24.0.11",
+		"@types/slack-node": "^0.1.2",
 		"@types/node": "^11.13.2",
 		"@typescript-eslint/parser": "^1.6.0",
 		"eslint": "^5.16.0",

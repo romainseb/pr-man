@@ -1,5 +1,6 @@
-import * as GitHub from "node-github-graphql"
+import { GitHub } from "github-graphql-api"
 import { getGQL } from "./gql"
+import { EnvironmentVariable, Repository, User, GithubResponse } from "../types"
 import {
 	filterByUsers,
 	filterByLabels,
@@ -28,16 +29,16 @@ export function getGithubApi(githubToken: EnvironmentVariable) {
 export function getPrsFromRepository(
 	repository: Repository,
 	users: User[],
-	githubApi: any
+	githubApi: GitHub
 ) {
 	return new Promise((resolve, reject) => {
-		githubApi.query(
-			getGQL(repository.owner, repository.repository),
-			(res: any, err: any) => {
-				if (err) {
-					reject(err)
+		githubApi
+			.query(getGQL(repository.owner, repository.repository))
+			.then((value: GithubResponse) => {
+				if (!value) {
+					reject()
 				}
-				const allPrs = res.data.repository.pullRequests.edges
+				const allPrs = value.repository.pullRequests.edges
 				const filteredPrs = allPrs
 					.filter(filterByUsers(users))
 					.filter(filterByLabels(repository.ignoreLabels))
@@ -52,7 +53,6 @@ export function getPrsFromRepository(
 					prToDiscuss,
 					prToMerge
 				})
-			}
-		)
+			})
 	})
 }

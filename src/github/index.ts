@@ -1,19 +1,22 @@
-import GithubGraphQLApi from "node-github-graphql"
+import * as GitHub from "node-github-graphql"
 import { getGQL } from "./gql"
 import {
-  filterByUsers,
-  filterByLabels,
-  getDismissAndApprovedPr
+	filterByUsers,
+	filterByLabels,
+	getDismissAndApprovedPr
 } from "./github-tools"
 
 /**
  * This function return an api initialized
- * @param {string} githubToken github token
+ * @param {EnvironmentVariable} githubToken github token
  */
-export function getGithubApi(githubToken) {
-  return new GithubGraphQLApi({
-    token: githubToken
-  })
+export function getGithubApi(githubToken: EnvironmentVariable) {
+	if (!githubToken) {
+		return null
+	}
+	return new GitHub({
+		token: githubToken
+	})
 }
 
 /**
@@ -22,31 +25,34 @@ export function getGithubApi(githubToken) {
  * @param {array} users the team
  * @param {object} githubApi the github api
  */
-export function getPrsFromRepository(repository, users, githubApi) {
-  return new Promise((resolve, reject) => {
-    githubApi.query(
-      getGQL(repository.owner, repository.repository),
-      null,
-      (res, err) => {
-        if (err) {
-          reject(err)
-        }
-        const allPrs = res.data.repository.pullRequests.edges
-        const filteredPrs = allPrs
-          .filter(filterByUsers(users))
-          .filter(filterByLabels(repository.ignoreLabels))
-        const [prToReview, prToDiscuss, prToMerge] = getDismissAndApprovedPr(
-          filteredPrs,
-          repository.reviewRequired
-        )
+export function getPrsFromRepository(
+	repository: Repository,
+	users: User[],
+	githubApi: any
+) {
+	return new Promise((resolve, reject) => {
+		githubApi.query(
+			getGQL(repository.owner, repository.repository),
+			(res: any, err: any) => {
+				if (err) {
+					reject(err)
+				}
+				const allPrs = res.data.repository.pullRequests.edges
+				const filteredPrs = allPrs
+					.filter(filterByUsers(users))
+					.filter(filterByLabels(repository.ignoreLabels))
+				const [prToReview, prToDiscuss, prToMerge] = getDismissAndApprovedPr(
+					filteredPrs,
+					repository.reviewRequired
+				)
 
-        resolve({
-          repository,
-          prToReview,
-          prToDiscuss,
-          prToMerge
-        })
-      }
-    )
-  })
+				resolve({
+					repository,
+					prToReview,
+					prToDiscuss,
+					prToMerge
+				})
+			}
+		)
+	})
 }

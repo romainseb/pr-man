@@ -8,8 +8,8 @@ const MAX_ROWS = 100
  * @param {string} owner The name of the repository's owner
  * @param {string} name The name of the repository
  */
-export function getGQL(owner, name) {
-  return `
+export function getGQL(owner: string, name: string) {
+	return `
     {
         repository(owner: "${owner}", name: "${name}") {
           pullRequests(first: ${MAX_ROWS}, states: [OPEN]) {

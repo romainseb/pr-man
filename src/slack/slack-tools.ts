@@ -5,9 +5,14 @@
  * @param {string} githubUsername the github login
  * @param {array} users the slack login
  */
-function getSlackUsername(githubUsername, users) {
-  return users.find(user => user.githubUserName === githubUsername)
-    .slackUserName
+function getSlackUsername(githubUsername: string, users: User[]): string {
+	const user = users.find(
+		(user: User) => user.githubUserName === githubUsername
+	)
+	if (!user) {
+		return ""
+	}
+	return user.slackUserName
 }
 
 /**
@@ -15,19 +20,19 @@ function getSlackUsername(githubUsername, users) {
  * @param {array} users array of users
  * @param {symbol} role the current role we want to filter
  */
-export function isAuthorRole(users, role) {
-  return pr =>
-    users.find(
-      user => pr.node.author.login === user.githubUserName && user.role === role
-    )
+export function isAuthorRole(users: User[], role: ROLE) {
+	return (pr: any) =>
+		users.find(
+			user => pr.node.author.login === user.githubUserName && user.role === role
+		)
 }
 
 /**
  * This function build a pr label
  * @param {object} repository the repository description
  */
-export function buildAttachment(repository) {
-  return pr => `${repository.label} - <${pr.node.url}|${pr.node.title}>`
+export function buildAttachment(repository: Repository) {
+	return (pr: any) => `${repository.label} - <${pr.node.url}|${pr.node.title}>`
 }
 
 /**
@@ -35,12 +40,15 @@ export function buildAttachment(repository) {
  * @param {object} repository the repository description
  * @param {array} users array of users to fetch the name to tell in slack
  */
-export function buildDiscussedAttachment(repository, users) {
-  return pr =>
-    `${buildAttachment(repository)(pr)} @${getSlackUsername(
-      pr.node.author.login,
-      users
-    )}`
+export function buildDiscussedAttachment(
+	repository: Repository,
+	users: User[]
+) {
+	return (pr: any) =>
+		`${buildAttachment(repository)(pr)} @${getSlackUsername(
+			pr.node.author.login,
+			users
+		)}`
 }
 
 /**
@@ -49,12 +57,12 @@ export function buildDiscussedAttachment(repository, users) {
  * @param {string} color the block's color
  * @param {array} prs the block's pr
  */
-export function buildBlock(title, color, prs) {
-  return {
-    title,
-    text: prs.length > 0 ? prs.join("\n") : "Nothing 🎉",
-    color
-  }
+export function buildBlock(title: string, color: string, prs: any) {
+	return {
+		title,
+		text: prs.length > 0 ? prs.join("\n") : "Nothing 🎉",
+		color
+	}
 }
 
 /**
@@ -62,6 +70,6 @@ export function buildBlock(title, color, prs) {
  * @param {array} users list of users
  * @param {Symbol} role role searched
  */
-export function usersContainsRole(users, role) {
-  return users.findIndex(user => user.role === role) !== -1
+export function usersContainsRole(users: User[], role: ROLE) {
+	return users.findIndex(user => user.role === role) !== -1
 }

@@ -1,36 +1,37 @@
 {
-  "name": "@romainseb/pr-man",
-  "version": "0.0.4",
-  "description": "This repository allow to send PR messages to Slack",
-  "main": "lib/index.js",
-  "author": "Sébastien Romain",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/romainseb/pr-man"
-  },
-  "scripts": {
-    "build": "tsc",
-    "start": "ts-node src/test.js",
-    "deploy": "node .circleci/script.js",
-    "prepare": "npm run build"
-  },
-  "dependencies": {
-    "@typescript-eslint/eslint-plugin": "^1.6.0",
-    "node-github-graphql": "^0.2.7",
-    "slack-node": "^0.1.8"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.11",
-    "@types/node": "^11.13.2",
-    "@typescript-eslint/parser": "^1.6.0",
-    "eslint": "^5.16.0",
-    "eslint-config-node": "^4.0.0",
-    "rimraf": "^2.6.3",
-    "ts-node": "^8.0.3",
-    "typescript": "^3.4.2"
-  }
+	"name": "@romainseb/pr-man",
+	"version": "0.0.4",
+	"description": "This repository allow to send PR messages to Slack",
+	"main": "lib/index.js",
+	"typings": "src/types",
+	"author": "Sébastien Romain",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/romainseb/pr-man"
+	},
+	"scripts": {
+		"build": "tsc",
+		"start": "tsc && node lib/test.js",
+		"deploy": "node .circleci/script.js",
+		"prepare": "npm run build"
+	},
+	"dependencies": {
+		"@typescript-eslint/eslint-plugin": "^1.6.0",
+		"node-github-graphql": "^0.2.7",
+		"slack-node": "^0.1.8"
+	},
+	"devDependencies": {
+		"@types/jest": "^24.0.11",
+		"@types/node": "^11.13.2",
+		"@typescript-eslint/parser": "^1.6.0",
+		"eslint": "^5.16.0",
+		"eslint-config-node": "^4.0.0",
+		"rimraf": "^2.6.3",
+		"ts-node": "^8.0.3",
+		"typescript": "^3.4.2"
+	}
 }

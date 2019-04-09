@@ -1,3 +1,8 @@
+declare module "node-github-graphql"
+declare module "slack-node"
+
+declare type EnvironmentVariable = string | undefined
+
 declare enum PullRequestReviewState {
 	PENDING = "PENDING",
 	COMMENTED = "COMMENTED",
@@ -11,6 +16,13 @@ declare enum ROLE {
 	FRONTEND = "FRONTEND",
 	QA = "QA",
 	OPS = "OPS"
+}
+
+declare interface RepositoryToReview {
+	repository: Repository
+	prToReview: any
+	prToDiscuss: any
+	prToMerge: any
 }
 
 declare interface Repository {

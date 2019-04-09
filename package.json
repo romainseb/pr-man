@@ -3,7 +3,7 @@
 	"version": "0.0.4",
 	"description": "This repository allow to send PR messages to Slack",
 	"main": "lib/index.js",
-	"typings": "src/types",
+	"types": "lib/index.d.ts",
 	"author": "Sébastien Romain",
 	"license": "MIT",
 	"publishConfig": {
@@ -15,7 +15,7 @@
 	},
 	"scripts": {
 		"build": "tsc",
-		"start": "tsc && node lib/test.js",
+		"test": "jest --silent",
 		"deploy": "node .circleci/script.js",
 		"prepare": "npm run build"
 	},
@@ -30,7 +30,9 @@
 		"@typescript-eslint/parser": "^1.6.0",
 		"eslint": "^5.16.0",
 		"eslint-config-node": "^4.0.0",
+		"jest": "^24.7.1",
 		"rimraf": "^2.6.3",
+		"ts-jest": "^24.0.2",
 		"ts-node": "^8.0.3",
 		"typescript": "^3.4.2"
 	}

@@ -4,7 +4,10 @@ import { User, Role, Repository, GithubPullRequest, Attachment } from "../types"
  * @param githubUsername the github login
  * @param users the slack login
  */
-function getSlackUsername(githubUsername: string, users: User[]): string {
+export function getSlackUsername(
+	githubUsername: string,
+	users: User[]
+): string {
 	const user = users.find(
 		(user: User) => user.githubUserName === githubUsername
 	)

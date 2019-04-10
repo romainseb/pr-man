@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "ES2015",
+		"module": "commonjs",
+		"downlevelIteration": true,
+		"incremental": true,
+		"declaration": true,
+		"outDir": "lib",
+		"strict": true,
+		"removeComments": true,
+		"typeRoots": ["./src/types", "./node_modules/@types"]
+	},
+	"lib": ["ES2015.Iterable"],
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "src/test", "src/**/*.test*"]
+}

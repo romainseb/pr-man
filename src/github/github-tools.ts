@@ -52,8 +52,8 @@ export function removeFromArray(array: string[], login: string): void {
 
 /**
  * This function add a user in the array if not included
- * @param {array} array a javascript classic array
- * @param {string} login a user's login
+ * @param array a javascript classic array
+ * @param login a user's login
  */
 export function addInArray(array: string[], login: string): void {
 	if (!array.includes(login)) {

@@ -9,7 +9,7 @@ import {
 
 /**
  * This function return an api initialized
- * @param {EnvironmentVariable} githubToken github token
+ * @param githubToken github token
  */
 export function getGithubApi(githubToken: EnvironmentVariable) {
 	if (!githubToken) {
@@ -22,9 +22,9 @@ export function getGithubApi(githubToken: EnvironmentVariable) {
 
 /**
  * This function get pr from a repository & format it
- * @param {object} repository the repository configuration
- * @param {array} users the team
- * @param {object} githubApi the github api
+ * @param repository the repository configuration
+ * @param users the team
+ * @param githubApi the github api
  */
 export function getPrsFromRepository(
 	repository: Repository,

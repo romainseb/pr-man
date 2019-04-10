@@ -15,7 +15,7 @@ import {
 
 /**
  * this function return a slack api to use it
- * @param {string} slackToken the slack token obviously
+ * @param slackToken the slack token obviously
  */
 export function getSlackApi(slackToken: EnvironmentVariable) {
 	return new Slack(slackToken)
@@ -23,9 +23,9 @@ export function getSlackApi(slackToken: EnvironmentVariable) {
 
 /**
  * this function send the pr to slack
- * @param {array} repositories the repositories result
- * @param {object} configuration the configuration for the team
- * @param {object} slackApi the slack api
+ * @param repositories the repositories result
+ * @param configuration the configuration for the team
+ * @param slackApi the slack api
  */
 export function sendPrsToSlack(
 	repositories: RepositoryToReview[],

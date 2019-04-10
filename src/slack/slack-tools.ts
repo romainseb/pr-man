@@ -78,8 +78,8 @@ export function buildBlock(
 
 /**
  * this function tell if the users contains a specific role
- * @param {array} users list of users
- * @param {Symbol} role role searched
+ * @param users list of users
+ * @param role role searched
  */
 export function usersContainsRole(users: User[], role: Role): boolean {
 	return users.findIndex(user => user.role === role) !== -1

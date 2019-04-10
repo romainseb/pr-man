@@ -4,7 +4,7 @@ import { User, GithubReview, GithubPullRequest, GithubLabel } from "../types"
  * This function return a function to find the index of a user
  * @param users array of users
  */
-function getFindIndexOfUser(users: User[]): (login: string) => boolean {
+export function getFindIndexOfUser(users: User[]): (login: string) => boolean {
 	return login => users.findIndex(user => user.githubUserName === login) !== -1
 }
 
@@ -12,7 +12,7 @@ function getFindIndexOfUser(users: User[]): (login: string) => boolean {
  * this function return a filter to know if the passed label is ignored
  * @param ignoredLabels labels ignored for the prs
  */
-function isLabelIgnored(
+export function isLabelIgnored(
 	ignoredLabels: string[]
 ): (label: GithubLabel) => boolean {
 	return label => ignoredLabels.includes(label.node.name)
@@ -44,7 +44,7 @@ export function filterByLabels(
  * @param array a javascript classic array
  * @param login a user's login
  */
-function removeFromArray(array: string[], login: string): void {
+export function removeFromArray(array: string[], login: string): void {
 	if (array.includes(login)) {
 		array.splice(array.indexOf(login), 1)
 	}
@@ -55,7 +55,7 @@ function removeFromArray(array: string[], login: string): void {
  * @param {array} array a javascript classic array
  * @param {string} login a user's login
  */
-function addInArray(array: string[], login: string): void {
+export function addInArray(array: string[], login: string): void {
 	if (!array.includes(login)) {
 		array.push(login)
 	}

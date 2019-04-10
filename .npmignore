@@ -1,9 +1,13 @@
 .circleci
 node_modules
+bin
 src
 .eslintrc
 .gitignore
 .npmignore
 .npmrc
 .prettierrc
+jest.config.js
 babel.config.js
+tsconfig.json
+package-lock.json

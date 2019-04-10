@@ -1,6 +1,6 @@
 {
 	"name": "@romainseb/pr-man",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "This repository allow to send PR messages to Slack",
 	"main": "lib/index.js",
 	"types": "lib/index.d.ts",
@@ -21,11 +21,11 @@
 		"prepublish": "npm run build && npm run test"
 	},
 	"dependencies": {
-		"@typescript-eslint/eslint-plugin": "^1.6.0",
 		"github-graphql-api": "^1.0.6",
 		"slack-node": "^0.1.8"
 	},
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^1.6.0",
 		"@types/jest": "^24.0.11",
 		"@types/slack-node": "^0.1.2",
 		"@types/node": "^11.13.2",
@@ -36,6 +36,6 @@
 		"rimraf": "^2.6.3",
 		"ts-jest": "^24.0.2",
 		"ts-node": "^8.0.3",
-		"typescript": "^3.4.2"
+		"typescript": "^3.4.3"
 	}
 }

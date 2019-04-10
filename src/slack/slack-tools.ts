@@ -71,7 +71,7 @@ export function buildBlock(
 ): Attachment {
 	return {
 		title,
-		text: prs.length > 0 ? prs.join("\n") : "Nothing 🎉",
+		text: prs.length > 0 ? prs.join("\n") : "Nothing 👍",
 		color
 	}
 }

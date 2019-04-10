@@ -23,8 +23,11 @@ The first parameter of runPrMan is a configuration or a list of configurations (
 A configuration is composed by:
 
 - slackChannel : The channel when you want the message to be send ( your slack token should have access to this channel )
-
+- title (optional) : If you want to have a title before the listing of your pull request
 - users : a list of users with this format
+- repositories : a list of github repositories
+
+### user example
 
 ```typescript
 import { Role } from "@romainseb/pr-man"
@@ -38,7 +41,7 @@ const users = [
 ]
 ```
 
-- repositories : a list of github repositories
+### repository example
 
 ```typescript
 import { Role } from "@romainseb/pr-man"

@@ -4,6 +4,7 @@ import { runPrMan } from "../src/index"
 const configurations: Configuration[] = [
 	{
 		slackChannel: "#sromain-test",
+		title: "Team 1 PRs ⚔️",
 		users: [
 			{
 				githubUserName: "romainseb",

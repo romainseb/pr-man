@@ -38,6 +38,7 @@ export interface User {
 
 export interface Configuration {
 	slackChannel: string
+	title?: string
 	users: User[]
 	repositories: Repository[]
 }

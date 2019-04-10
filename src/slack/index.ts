@@ -72,29 +72,31 @@ export function sendPrsToSlack(
 		})
 
 		const attachments = []
-		if (usersContainsRole(users, Role.FRONTEND)) {
+		if (usersContainsRole(users, Role.FRONTEND) && frontendPRs.length > 0) {
 			attachments.push(
 				buildBlock("Frontend review required", "#3949AB", frontendPRs)
 			)
 		}
-		if (usersContainsRole(users, Role.BACKEND)) {
+		if (usersContainsRole(users, Role.BACKEND) && backendPRs.length > 0) {
 			attachments.push(
 				buildBlock("Backend review required", "#546E7A", backendPRs)
 			)
 		}
 
-		if (usersContainsRole(users, Role.QA)) {
+		if (usersContainsRole(users, Role.QA) && qAPRs.length > 0) {
 			attachments.push(buildBlock("QA review required", "#2c3e50", qAPRs))
 		}
 
-		attachments.push(buildBlock("Request changes", "#e53935", discussedPRs))
+		if (discussedPRs.length > 0) {
+			attachments.push(buildBlock("Request changes", "#e53935", discussedPRs))
+		}
 		attachments.push(buildBlock("Ready to merge", "#43A047", approvedPRs))
 
 		slackApi.api(
 			"chat.postMessage",
 			{
 				channel: configuration.slackChannel,
-				text: "",
+				text: configuration.title,
 				username: `PR MAN`,
 				// eslint-disable-next-line @typescript-eslint/camelcase
 				link_names: "true",

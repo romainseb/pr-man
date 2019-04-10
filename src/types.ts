@@ -48,8 +48,7 @@ export interface Attachment {
 	text: string
 }
 
-// GITHUB STUFF
-
+// GITHUB GraphQL STUFF
 export type GithubResponse = {
 	repository: GithubRepository
 }

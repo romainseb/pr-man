@@ -1,6 +1,7 @@
-import { EnvironmentVariable, Configuration, Role } from "./types"
+import { EnvironmentVariable, Configuration } from "./types"
 import { getGithubApi, getPrsFromRepository } from "./github"
 import { sendPrsToSlack, getSlackApi } from "./slack"
+export { Role } from "./types"
 
 function checkParameters(
 	githubToken: EnvironmentVariable,
@@ -14,7 +15,7 @@ function checkParameters(
 	}
 }
 
-function run(
+export function runPrMan(
 	configurations: Configuration[],
 	githubToken: EnvironmentVariable,
 	slackToken: EnvironmentVariable
@@ -36,9 +37,4 @@ function run(
 			sendPrsToSlack(values, configuration, slackApi)
 		})
 	})
-}
-
-export default {
-	run,
-	Role
 }

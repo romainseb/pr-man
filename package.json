@@ -15,10 +15,10 @@
 	},
 	"scripts": {
 		"build": "tsc",
-		"start": "ts-node src/start.ts",
+		"start": "ts-node bin/start.ts",
 		"test": "jest --silent",
 		"deploy": "node .circleci/script.js",
-		"prepare": "npm run build"
+		"prepublish": "npm run build && npm run test"
 	},
 	"dependencies": {
 		"@typescript-eslint/eslint-plugin": "^1.6.0",

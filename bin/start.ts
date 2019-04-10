@@ -1,5 +1,5 @@
-import { Configuration, Role } from "./types"
-import prMan from "./index"
+import { Configuration, Role } from "../src/types"
+import { runPrMan } from "../src/index"
 
 const configurations: Configuration[] = [
 	{
@@ -23,7 +23,7 @@ const configurations: Configuration[] = [
 	}
 ]
 
-prMan.run(
+runPrMan.run(
 	configurations,
 	process.env.GITHUB_TOKEN_API,
 	process.env.SLACK_TOKEN_API

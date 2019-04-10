@@ -1,10 +1,5 @@
 import * as Slack from "slack-node"
-import {
-	EnvironmentVariable,
-	RepositoryToReview,
-	Configuration,
-	Role
-} from "../types"
+import { Token, RepositoryToReview, Configuration, Role } from "../types"
 import {
 	buildAttachment,
 	buildBlock,
@@ -17,7 +12,7 @@ import {
  * this function return a slack api to use it
  * @param slackToken the slack token obviously
  */
-export function getSlackApi(slackToken: EnvironmentVariable) {
+export function getSlackApi(slackToken: Token) {
 	return new Slack(slackToken)
 }
 

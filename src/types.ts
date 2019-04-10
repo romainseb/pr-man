@@ -1,4 +1,4 @@
-export type EnvironmentVariable = string | undefined
+export type Token = string | undefined
 
 export enum PullRequestReviewState {
 	PENDING = "PENDING",

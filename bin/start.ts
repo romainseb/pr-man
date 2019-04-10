@@ -23,7 +23,7 @@ const configurations: Configuration[] = [
 	}
 ]
 
-runPrMan.run(
+runPrMan(
 	configurations,
 	process.env.GITHUB_TOKEN_API,
 	process.env.SLACK_TOKEN_API

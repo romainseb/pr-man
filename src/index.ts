@@ -15,8 +15,17 @@ function checkParameters(
 	}
 }
 
+function getConfigurations(
+	config: Configuration[] | Configuration
+): Configuration[] {
+	if (Array.isArray(config)) {
+		return config
+	}
+	return [config]
+}
+
 export function runPrMan(
-	configurations: Configuration[],
+	config: Configuration[] | Configuration,
 	githubToken: EnvironmentVariable,
 	slackToken: EnvironmentVariable
 ) {
@@ -28,7 +37,7 @@ export function runPrMan(
 		return
 	}
 
-	configurations.forEach(configuration => {
+	getConfigurations(config).forEach(configuration => {
 		Promise.all(
 			configuration.repositories.map(repository =>
 				getPrsFromRepository(repository, configuration.users, githubApi)

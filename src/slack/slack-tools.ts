@@ -1,8 +1,8 @@
-import { User, Role, Repository, GithubPullRequest } from "../types"
+import { User, Role, Repository, GithubPullRequest, Attachment } from "../types"
 /**
  * this function get a slack username from a github login
- * @param {string} githubUsername the github login
- * @param {array} users the slack login
+ * @param githubUsername the github login
+ * @param users the slack login
  */
 function getSlackUsername(githubUsername: string, users: User[]): string {
 	const user = users.find(
@@ -16,11 +16,14 @@ function getSlackUsername(githubUsername: string, users: User[]): string {
 
 /**
  * This function check a pr check a user & a role
- * @param {array} users array of users
- * @param {symbol} role the current role we want to filter
+ * @param users array of users
+ * @param role the current role we want to filter
  */
-export function isAuthorRole(users: User[], role: Role) {
-	return (pr: GithubPullRequest) =>
+export function isAuthorRole(
+	users: User[],
+	role: Role
+): (pr: GithubPullRequest) => User | undefined {
+	return pr =>
 		users.find(
 			user => pr.node.author.login === user.githubUserName && user.role === role
 		)
@@ -28,23 +31,24 @@ export function isAuthorRole(users: User[], role: Role) {
 
 /**
  * This function build a pr label
- * @param {object} repository the repository description
+ * @param repository the repository description
  */
-export function buildAttachment(repository: Repository) {
-	return (pr: GithubPullRequest) =>
-		`${repository.label} - <${pr.node.url}|${pr.node.title}>`
+export function buildAttachment(
+	repository: Repository
+): (pr: GithubPullRequest) => string {
+	return pr => `${repository.label} - <${pr.node.url}|${pr.node.title}>`
 }
 
 /**
  * This function build a pr link for a discussed pr
- * @param {object} repository the repository description
- * @param {array} users array of users to fetch the name to tell in slack
+ * @param repository the repository description
+ * @param users array of users to fetch the name to tell in slack
  */
 export function buildDiscussedAttachment(
 	repository: Repository,
 	users: User[]
-) {
-	return (pr: GithubPullRequest) =>
+): (pr: GithubPullRequest) => string {
+	return pr =>
 		`${buildAttachment(repository)(pr)} @${getSlackUsername(
 			pr.node.author.login,
 			users
@@ -53,11 +57,15 @@ export function buildDiscussedAttachment(
 
 /**
  * This function build a pr block
- * @param {string} title the block's title
- * @param {string} color the block's color
- * @param {array} prs the block's pr
+ * @param title the block's title
+ * @param color the block's color
+ * @param prs the block's pr
  */
-export function buildBlock(title: string, color: string, prs: string[]) {
+export function buildBlock(
+	title: string,
+	color: string,
+	prs: string[]
+): Attachment {
 	return {
 		title,
 		text: prs.length > 0 ? prs.join("\n") : "Nothing 🎉",
@@ -70,6 +78,6 @@ export function buildBlock(title: string, color: string, prs: string[]) {
  * @param {array} users list of users
  * @param {Symbol} role role searched
  */
-export function usersContainsRole(users: User[], role: Role) {
+export function usersContainsRole(users: User[], role: Role): boolean {
 	return users.findIndex(user => user.role === role) !== -1
 }

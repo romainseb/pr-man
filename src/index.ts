@@ -1,4 +1,4 @@
-import { EnvironmentVariable, Configuration } from "./types"
+import { EnvironmentVariable, Configuration, Role } from "./types"
 import { getGithubApi, getPrsFromRepository } from "./github"
 import { sendPrsToSlack, getSlackApi } from "./slack"
 
@@ -39,5 +39,6 @@ function run(
 }
 
 export default {
-	run
+	run,
+	Role
 }

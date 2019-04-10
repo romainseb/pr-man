@@ -42,6 +42,12 @@ export interface Configuration {
 	repositories: Repository[]
 }
 
+export interface Attachment {
+	title: string
+	color: string
+	text: string
+}
+
 // GITHUB STUFF
 
 export type GithubResponse = {

@@ -42,14 +42,14 @@ async function handleConfiguration(
 	const repositoriesToReview: RepositoryToReview[] = []
 
 	for (const repository of configuration.repositories) {
-		const repositoryToReview = (await getPrsFromRepository(
+		const repositoryToReview = await getPrsFromRepository(
 			repository,
 			configuration.users,
 			githubApi
-		)) as RepositoryToReview
+		)
 		repositoriesToReview.push(repositoryToReview)
 	}
-	sendPrsToSlack(repositoriesToReview, configuration, slackApi)
+	return await sendPrsToSlack(repositoriesToReview, configuration, slackApi)
 }
 
 /**

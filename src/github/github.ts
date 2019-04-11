@@ -1,6 +1,6 @@
 import { GitHub } from "github-graphql-api"
 import { getGQL } from "./gql"
-import { Repository, User, GithubResponse } from "../types"
+import { Repository, User, GithubResponse, RepositoryToReview } from "../types"
 import {
 	filterByUsers,
 	filterByLabels,
@@ -18,21 +18,17 @@ export function getGithubApi(githubToken: string) {
 }
 
 /**
- * This function get pr from a repository & format it
- * @param repository the repository configuration
- * @param users the team
- * @param githubApi the github api
+ * This function get the review on a repository to review
+ * @param githubResponse The github graphql answer
+ * @param repository The current repository
+ * @param users Users to look at PRs
  */
-export async function getPrsFromRepository(
+function getRepositoryToReview(
+	githubResponse: GithubResponse,
 	repository: Repository,
-	users: User[],
-	githubApi: GitHub
-) {
-	const value = (await githubApi.query(
-		getGQL(repository.owner, repository.repository)
-	)) as GithubResponse
-
-	const allPrs = value.repository.pullRequests.edges
+	users: User[]
+): RepositoryToReview {
+	const allPrs = githubResponse.repository.pullRequests.edges
 
 	const filteredPrs = allPrs
 		.filter(filterByUsers(users))
@@ -49,4 +45,22 @@ export async function getPrsFromRepository(
 		prToDiscuss,
 		prToMerge
 	}
+}
+
+/**
+ * This function get pr from a repository & format it
+ * @param repository the repository configuration
+ * @param users the team
+ * @param githubApi the github api
+ */
+export async function getPrsFromRepository(
+	repository: Repository,
+	users: User[],
+	githubApi: GitHub
+): Promise<RepositoryToReview> {
+	const githubAnswer = (await githubApi.query(
+		getGQL(repository.owner, repository.repository)
+	)) as GithubResponse
+
+	return getRepositoryToReview(githubAnswer, repository, users)
 }

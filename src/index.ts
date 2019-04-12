@@ -1,8 +1,14 @@
 import * as Slack from "slack-node"
-import { Token, Configuration, RepositoryToReview } from "./types"
+import {
+	Token,
+	Configuration,
+	RepositoryToReview,
+	ExecutionResult
+} from "./types"
 import { getGithubApi, getPrsFromRepository } from "./github"
 import { sendPrsToSlack, getSlackApi } from "./slack"
 import GitHub from "github-graphql-api"
+import { ExecException } from "child_process"
 export { Role } from "./types"
 
 /**
@@ -34,6 +40,12 @@ function getConfigurations(
 	return [config]
 }
 
+/**
+ * This function fetch the pull request from github & then call slack to send the message
+ * @param config Configuration to pass to have data on github repositories & users
+ * @param githubApi the github graphql api
+ * @param slackApi the slack api
+ */
 async function handleConfiguration(
 	configuration: Configuration,
 	githubApi: GitHub,
@@ -62,7 +74,7 @@ export async function runPrMan(
 	config: Configuration[] | Configuration,
 	githubTokenOrEmpty: Token,
 	slackTokenOrEmpty: Token
-) {
+): Promise<ExecutionResult[]> {
 	const [githubToken, slackToken] = getTokens(
 		githubTokenOrEmpty,
 		slackTokenOrEmpty
@@ -70,8 +82,10 @@ export async function runPrMan(
 	const configurations = getConfigurations(config)
 	const githubApi = getGithubApi(githubToken)
 	const slackApi = getSlackApi(slackToken)
+	const result: ExecutionResult[] = []
 
 	for (const configuration of configurations) {
-		await handleConfiguration(configuration, githubApi, slackApi)
+		result.push(await handleConfiguration(configuration, githubApi, slackApi))
 	}
+	return result
 }

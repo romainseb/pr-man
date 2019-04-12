@@ -5,7 +5,9 @@ import {
 	Configuration,
 	Role,
 	Attachment,
-	User
+	User,
+	ExecutionResult,
+	ExecutionStatus
 } from "../types"
 import {
 	buildAttachment,
@@ -97,17 +99,49 @@ function getAttachments(
 	return attachments
 }
 
+export async function callSlack(
+	attachments: Attachment[],
+	configuration: Configuration,
+	preResult: ExecutionResult,
+	slackApi: Slack
+): Promise<ExecutionResult> {
+	return new Promise<ExecutionResult>((resolve, reject) => {
+		slackApi.api(
+			"chat.postMessage",
+			{
+				channel: configuration.slackChannel,
+				text: configuration.title,
+				username: `PR MAN`,
+				// eslint-disable-next-line @typescript-eslint/camelcase
+				link_names: "true",
+				// eslint-disable-next-line @typescript-eslint/camelcase
+				icon_emoji: ":butler:",
+				// as_user: true,
+				attachments: JSON.stringify(attachments)
+			},
+			(err: any, response: any) => {
+				if (err) {
+					preResult.status = ExecutionStatus.KO
+					return reject(preResult)
+				}
+				preResult.status = ExecutionStatus.OK
+				return resolve(preResult)
+			}
+		)
+	})
+}
+
 /**
  * this function send the pr to slack
  * @param repositories the repositories result
  * @param configuration the configuration for the team
  * @param slackApi the slack api
  */
-export function sendPrsToSlack(
+export async function sendPrsToSlack(
 	repositories: RepositoryToReview[],
 	configuration: Configuration,
 	slackApi: Slack
-) {
+): Promise<ExecutionResult> {
 	const { users } = configuration
 	const [
 		frontendPRs,
@@ -124,27 +158,13 @@ export function sendPrsToSlack(
 		discussedPRs,
 		approvedPRs
 	)
+	const preResult: ExecutionResult = {
+		countPullRequestsToReviewFront: frontendPRs.length,
+		countPullRequestsToReviewBack: backendPRs.length,
+		countPullRequestsToReviewQa: qAPRs.length,
+		countPullRequestsDiscussed: discussedPRs.length,
+		countPullRequestsReadyToMerge: approvedPRs.length
+	}
 
-	return new Promise((resolve, reject) => {
-		slackApi.api(
-			"chat.postMessage",
-			{
-				channel: configuration.slackChannel,
-				text: configuration.title,
-				username: `PR MAN`,
-				// eslint-disable-next-line @typescript-eslint/camelcase
-				link_names: "true",
-				// eslint-disable-next-line @typescript-eslint/camelcase
-				icon_emoji: ":butler:",
-				// as_user: true,
-				attachments: JSON.stringify(attachments)
-			},
-			(err: any, response: any) => {
-				if (err) {
-					return reject(err)
-				}
-				return resolve(response)
-			}
-		)
-	})
+	return await callSlack(attachments, configuration, preResult, slackApi)
 }

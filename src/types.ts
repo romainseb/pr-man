@@ -70,7 +70,7 @@ export enum ExecutionStatus {
 }
 
 export type ExecutionResult = {
-	status: ExecutionStatus
+	status?: ExecutionStatus
 	countPullRequestsToReviewFront: number
 	countPullRequestsToReviewBack: number
 	countPullRequestsToReviewQa: number

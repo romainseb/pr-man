@@ -1,4 +1,19 @@
-export type EnvironmentVariable = string | undefined
+import {
+	GithubAuthor,
+	GithubLabel,
+	GithubLabelNode,
+	GithubLabels,
+	GithubPullRequest,
+	GithubPullRequestNode,
+	GithubPullRequests,
+	GithubRepository,
+	GithubResponse,
+	GithubReview,
+	GithubReviewNode,
+	GithubReviews
+} from "./github/gql"
+
+export type Token = string | undefined
 
 export enum PullRequestReviewState {
 	PENDING = "PENDING",
@@ -49,58 +64,31 @@ export interface Attachment {
 	text: string
 }
 
-// GITHUB GraphQL STUFF
-export type GithubResponse = {
-	repository: GithubRepository
+export enum ExecutionStatus {
+	OK = "OK",
+	KO = "KO"
 }
 
-export type GithubRepository = {
-	pullRequests: GithubPullRequests
+export type ExecutionResult = {
+	status?: ExecutionStatus
+	countPullRequestsToReviewFront: number
+	countPullRequestsToReviewBack: number
+	countPullRequestsToReviewQa: number
+	countPullRequestsDiscussed: number
+	countPullRequestsReadyToMerge: number
 }
 
-export type GithubPullRequests = {
-	edges: GithubPullRequest[]
-}
-
-export type GithubPullRequest = {
-	cursor: string
-	node: GithubPullRequestNode
-}
-
-export type GithubPullRequestNode = {
-	author: GithubAuthor
-	title: string
-	createdAt: string
-	url: string
-	labels: GithubLabels
-	reviews: GithubReviews
-}
-
-export type GithubReviews = {
-	edges: GithubReview[]
-}
-
-export type GithubReview = {
-	node: GithubReviewNode
-}
-
-export type GithubReviewNode = {
-	state: string
-	author: GithubAuthor
-}
-
-export type GithubLabels = {
-	edges: GithubLabel[]
-}
-
-export type GithubLabel = {
-	node: GithubLabelNode
-}
-
-export type GithubLabelNode = {
-	name: string
-}
-
-export type GithubAuthor = {
-	login: string
+export {
+	GithubAuthor,
+	GithubLabel,
+	GithubLabelNode,
+	GithubLabels,
+	GithubPullRequest,
+	GithubPullRequestNode,
+	GithubPullRequests,
+	GithubRepository,
+	GithubResponse,
+	GithubReview,
+	GithubReviewNode,
+	GithubReviews
 }

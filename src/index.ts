@@ -8,8 +8,7 @@ import {
 import { getGithubApi, getPrsFromRepository } from "./github"
 import { sendPrsToSlack, getSlackApi } from "./slack"
 import GitHub from "github-graphql-api"
-import { ExecException } from "child_process"
-export { Role } from "./types"
+export * from "./types"
 
 /**
  * This method check the token to ensure we have all the credentials to do the next steps

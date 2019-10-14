@@ -28,6 +28,15 @@ function getRepositoryToReview(
 	repository: Repository,
 	users: User[]
 ): RepositoryToReview {
+	if (!githubResponse.repository) {
+		return {
+			repository,
+			prToReview: [],
+			prToDiscuss: [],
+			prToMerge: []
+		}
+	}
+
 	const allPrs = githubResponse.repository.pullRequests.edges
 
 	const filteredPrs = allPrs

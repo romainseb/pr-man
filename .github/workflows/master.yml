@@ -24,6 +24,6 @@ jobs:
         env:
           CI: true
       - name: NPM publish if not present
-        uses: romainseb/action-npm-publish-if-not-present@0.0.1
+        uses: romainseb/action-npm-publish-if-not-present@0.0.2
         env:
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

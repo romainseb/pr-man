@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - sromain/test-job-release
 
 jobs:
   build:
@@ -22,8 +23,7 @@ jobs:
           npm test
         env:
           CI: true
-      - name: Publish
-        uses: mikeal/merge-release@v4.0.7
+      - name: NPM publish if not present
+        uses: romainseb/action-npm-publish-if-not-present@0.0.1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
